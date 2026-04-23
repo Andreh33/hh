@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0d0d1a;
+  --bg-2: #1a0a2e;
+  --card: rgba(17, 10, 40, 0.75);
+  --border: rgba(139, 92, 246, 0.2);
+  --border-hover: rgba(139, 92, 246, 0.5);
+  --primary: #7c3aed;
+  --primary-light: #a78bfa;
+  --muted: #94a3b8;
+  --text: #f1f5f9;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: var(--bg);
+  background-image: radial-gradient(ellipse at 20% 20%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.4);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.7);
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-purple-500/20 rounded-xl;
+  }
+
+  .glass-card {
+    background: rgba(17, 10, 40, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 12px;
+  }
+
+  .glass-input {
+    @apply bg-white/[0.06] border border-purple-500/25 rounded-lg text-slate-100 placeholder-slate-500
+    focus:outline-none focus:border-purple-500/60 focus:bg-white/[0.08] transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg
+    transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 hover:border-purple-500/30
+    text-slate-300 hover:text-white font-medium rounded-lg transition-all duration-200;
+  }
+
+  .btn-danger {
+    @apply bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 hover:border-red-500/60
+    text-red-400 hover:text-red-300 font-medium rounded-lg transition-all duration-200;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white
+    hover:bg-white/[0.06] transition-all duration-150 text-sm font-medium;
+  }
+
+  .sidebar-link.active {
+    @apply bg-purple-600/20 text-purple-300 border border-purple-500/20;
+  }
+
+  .table-cell-input {
+    @apply w-full bg-transparent text-slate-200 text-xs outline-none border-none
+    focus:bg-purple-500/10 rounded px-1 py-0.5 transition-colors;
+  }
+}

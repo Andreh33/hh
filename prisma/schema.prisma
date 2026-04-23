@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id                 String              @id @default(cuid())
+  name               String
+  email              String              @unique
+  password           String
+  role               Role                @default(USER)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  sessions           UserSession[]
+  leads              Lead[]
+  passwordResetTokens PasswordResetToken[]
+
+  @@index([email])
+}
+
+model UserSession {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  loginAt   DateTime  @default(now())
+  logoutAt  DateTime?
+  duration  Int?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([loginAt])
+}
+
+model Lead {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName    String?
+  clientName      String?
+  response        String?
+  shouldCall      Boolean   @default(false)
+  callDateTime    DateTime?
+  hasSeenDemo     Boolean   @default(false)
+  wantsCustomDemo Boolean   @default(false)
+  notes           String?
+  issues          String?
+  phone           String?
+  email           String?
+  commercialName  String?
+  order           Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([order])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique @default(cuid())
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([token])
+}
