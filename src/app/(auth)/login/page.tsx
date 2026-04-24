@@ -46,13 +46,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md animate-slide-up">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center mb-4">
-            <Image src="/logo.webp" alt="LaTech" width={220} height={220} className="rounded-2xl" priority />
+          <div className="inline-flex items-center justify-center mb-6">
+            <Image src="/logo.webp" alt="LaTech" width={380} height={380} className="rounded-3xl" priority />
           </div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-400 via-purple-300 to-violet-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
-            LaTech control de ventas
-          </h1>
-          <p className="text-slate-500 text-sm mt-1">Inicia sesión en tu cuenta</p>
+          <p className="text-slate-500 text-sm">Inicia sesión en tu cuenta</p>
         </div>
 
         {/* Card */}
