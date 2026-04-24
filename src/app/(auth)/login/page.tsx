@@ -48,7 +48,7 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-purple-600/20 border border-purple-500/30 mb-4">
             <Zap className="w-7 h-7 text-purple-400" />
           </div>
-          <h1 className="text-2xl font-bold text-white">CRM by andreh</h1>
+          <h1 className="text-2xl font-bold text-white">CRM by Andreh</h1>
           <p className="text-slate-500 text-sm mt-1">Inicia sesión en tu cuenta</p>
         </div>
 

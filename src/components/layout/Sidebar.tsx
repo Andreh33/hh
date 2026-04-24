@@ -49,7 +49,7 @@ export default function Sidebar() {
             <Zap className="w-4 h-4 text-purple-400" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">CRM by andreh</p>
+            <p className="text-sm font-semibold text-white">CRM by Andreh</p>
             <p className="text-xs text-slate-500">v1.0</p>
           </div>
         </div>

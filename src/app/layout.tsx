@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast'
 import AuthProvider from '@/components/providers/AuthProvider'
 
 export const metadata: Metadata = {
-  title: 'CRM by andreh',
+  title: 'CRM by Andreh',
   description: 'Sistema CRM profesional para gestión de clientes y seguimiento comercial',
 }
 
