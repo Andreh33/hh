@@ -8,7 +8,7 @@ const LoadingScreen = dynamic(() => import('@/components/ui/LoadingScreen'), { s
 const VantaBackground = dynamic(() => import('@/components/ui/VantaBackground'), { ssr: false })
 
 export const metadata: Metadata = {
-  title: 'CRM by Andreh',
+  title: 'LaTech control de ventas',
   description: 'Sistema CRM profesional para gestión de clientes y seguimiento comercial',
 }
 

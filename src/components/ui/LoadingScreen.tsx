@@ -37,7 +37,7 @@ export default function LoadingScreen() {
           <Zap className="w-8 h-8 text-purple-400" />
         </div>
         <div className="text-center">
-          <h1 className="text-xl font-bold text-white">CRM by Andreh</h1>
+          <h1 className="text-xl font-bold text-white">LaTech control de ventas</h1>
           <p className="text-xs text-slate-500 mt-1">Cargando...</p>
         </div>
       </div>

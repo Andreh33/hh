@@ -28,13 +28,13 @@ export default function VantaBackground() {
         gyroControls: false,
         minHeight: 200,
         minWidth: 200,
-        highlightColor: 0x2f002f,
-        midtoneColor: 0x442982,
-        lowlightColor: 0xb033e,
-        baseColor: 0x70404,
-        blurFactor: 0.24,
-        speed: 0.00,
-        zoom: 1.40,
+        highlightColor: 0x372748,
+        midtoneColor: 0x302ac3,
+        lowlightColor: 0x7cacfc,
+        baseColor: 0x50505,
+        blurFactor: 0.62,
+        speed: 1.30,
+        zoom: 3.00,
       })
     } catch (e) {
       console.warn('Vanta error:', e)

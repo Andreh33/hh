@@ -18,7 +18,7 @@ interface Lead {
   tag: string | null
   phone: string | null
   email: string | null
-  commercialName: string | null
+  callDateTime: string | null
   notes: string | null
   hasSeenDemo: boolean
   wantsCustomDemo: boolean
@@ -107,7 +107,7 @@ export default function UserCRM({ users }: { users: User[] }) {
                 <th className="text-left px-4 py-2.5 text-slate-500 font-medium">Respuesta</th>
                 <th className="text-left px-4 py-2.5 text-slate-500 font-medium">Teléfono</th>
                 <th className="text-left px-4 py-2.5 text-slate-500 font-medium">Email</th>
-                <th className="text-left px-4 py-2.5 text-slate-500 font-medium">Comercial</th>
+                <th className="text-left px-4 py-2.5 text-slate-500 font-medium">Fecha llamada</th>
                 <th className="text-left px-4 py-2.5 text-slate-500 font-medium">Notas</th>
               </tr>
             </thead>
@@ -135,7 +135,9 @@ export default function UserCRM({ users }: { users: User[] }) {
                     <td className="px-4 py-2 text-slate-400">{lead.response || '—'}</td>
                     <td className="px-4 py-2 text-slate-400">{lead.phone || '—'}</td>
                     <td className="px-4 py-2 text-slate-400">{lead.email || '—'}</td>
-                    <td className="px-4 py-2 text-slate-400">{lead.commercialName || '—'}</td>
+                    <td className="px-4 py-2 text-slate-400">
+                      {lead.callDateTime ? new Date(lead.callDateTime).toLocaleString('es-ES', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—'}
+                    </td>
                     <td className="px-4 py-2 text-slate-500 max-w-[200px] truncate">{lead.notes || '—'}</td>
                   </tr>
                 ))

@@ -33,13 +33,20 @@ const tagOptions = [
   { value: 'WARM', label: '🟡 Templado' },
   { value: 'COLD', label: '🔵 Frío' },
 ]
+
+const productOptions = [
+  { value: '', label: '—' },
+  { value: 'IA', label: '🤖 IA' },
+  { value: 'Web', label: '🌐 Web' },
+  { value: 'Ambas', label: '✨ Ambas' },
+]
 const tagStyles: Record<string, string> = {
   HOT: 'bg-red-500/20 text-red-400 border-red-500/30',
   WARM: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
   COLD: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
 }
 
-const columns: { key: keyof Lead; label: string; width: string; type: 'text' | 'bool' | 'datetime' | 'textarea' | 'tag' }[] = [
+const columns: { key: keyof Lead; label: string; width: string; type: 'text' | 'bool' | 'datetime' | 'textarea' | 'tag' | 'product' }[] = [
   { key: 'tag', label: 'Etiqueta', width: 'min-w-[120px]', type: 'tag' },
   { key: 'businessName', label: 'Negocio', width: 'min-w-[130px]', type: 'text' },
   { key: 'clientName', label: 'Cliente', width: 'min-w-[130px]', type: 'text' },
@@ -52,7 +59,7 @@ const columns: { key: keyof Lead; label: string; width: string; type: 'text' | '
   { key: 'issues', label: 'Inconvenientes', width: 'min-w-[150px]', type: 'textarea' },
   { key: 'phone', label: 'Teléfono', width: 'min-w-[120px]', type: 'text' },
   { key: 'email', label: 'Email', width: 'min-w-[160px]', type: 'text' },
-  { key: 'commercialName', label: 'Comercial', width: 'min-w-[120px]', type: 'text' },
+  { key: 'commercialName', label: 'IA / Web / Ambas', width: 'min-w-[130px]', type: 'product' },
 ]
 
 function useDebounce<T extends (...args: Parameters<T>) => void>(fn: T, delay: number): T {
@@ -68,7 +75,7 @@ function useDebounce<T extends (...args: Parameters<T>) => void>(fn: T, delay: n
 
 interface CellProps {
   value: string | boolean | null
-  type: 'text' | 'bool' | 'datetime' | 'textarea' | 'tag'
+  type: 'text' | 'bool' | 'datetime' | 'textarea' | 'tag' | 'product'
   onChange: (val: string | boolean) => void
   saving: boolean
 }
@@ -85,6 +92,23 @@ function Cell({ value, type, onChange, saving }: CellProps) {
   useEffect(() => {
     if (editing && inputRef.current) inputRef.current.focus()
   }, [editing])
+
+  if (type === 'product') {
+    return (
+      <select
+        value={String(value ?? '')}
+        onChange={(e) => onChange(e.target.value)}
+        className="text-[11px] font-medium px-2 py-0.5 rounded-full border cursor-pointer bg-transparent outline-none w-full text-slate-300 border-white/10"
+        style={{ backgroundColor: 'transparent' }}
+      >
+        {productOptions.map((o) => (
+          <option key={o.value} value={o.value} className="bg-[#0d0d1a] text-slate-200">
+            {o.label}
+          </option>
+        ))}
+      </select>
+    )
+  }
 
   if (type === 'tag') {
     return (
@@ -427,7 +451,7 @@ export default function CRMTable() {
                                 l.id === lead.id ? { ...l, [col.key]: val } : l
                               )
                             )
-                            if (col.type === 'bool' || col.type === 'tag') {
+                            if (col.type === 'bool' || col.type === 'tag' || col.type === 'product') {
                               updateLead(lead.id, col.key, val)
                             } else {
                               debouncedUpdate(lead.id, col.key, val)

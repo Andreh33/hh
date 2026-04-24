@@ -107,7 +107,7 @@ export default function CalendarView() {
     }
     setAddingReminder(true)
     try {
-      const dt = `${selected}T${newTime}:00`
+      const dt = new Date(`${selected}T${newTime}:00`).toISOString()
       const res = await fetch('/api/calendar/reminders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

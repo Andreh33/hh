@@ -53,7 +53,7 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
             <div className="w-8 h-8 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0">
               <Zap className="w-4 h-4 text-purple-400" />
             </div>
-            <p className="text-sm font-semibold text-white truncate">CRM by Andreh</p>
+            <p className="text-sm font-semibold text-white truncate">LaTech control de ventas</p>
           </div>
         )}
         {collapsed && (

@@ -49,7 +49,7 @@ export default function LoginPage() {
             <Zap className="w-7 h-7 text-purple-400" />
           </div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-400 via-purple-300 to-violet-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
-            CRM by Andreh
+            LaTech control de ventas
           </h1>
           <p className="text-slate-500 text-sm mt-1">Inicia sesión en tu cuenta</p>
         </div>
