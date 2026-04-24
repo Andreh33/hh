@@ -5,6 +5,7 @@ import AuthProvider from '@/components/providers/AuthProvider'
 import dynamic from 'next/dynamic'
 
 const LoadingScreen = dynamic(() => import('@/components/ui/LoadingScreen'), { ssr: false })
+const VantaBackground = dynamic(() => import('@/components/ui/VantaBackground'), { ssr: false })
 
 export const metadata: Metadata = {
   title: 'CRM by Andreh',
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es" suppressHydrationWarning>
       <body>
         <AuthProvider>
+          <VantaBackground />
           <LoadingScreen />
           {children}
           <Toaster

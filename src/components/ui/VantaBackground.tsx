@@ -5,7 +5,7 @@ import Script from 'next/script'
 
 declare global {
   interface Window {
-    VANTA: { NET: (config: Record<string, unknown>) => { destroy: () => void } }
+    VANTA: { FOG: (config: Record<string, unknown>) => { destroy: () => void } }
     THREE: unknown
   }
 }
@@ -18,22 +18,23 @@ export default function VantaBackground() {
 
   useEffect(() => {
     if (!threeReady || !vantaReady || !containerRef.current || effectRef.current) return
-    if (!window.VANTA?.NET) return
+    if (!window.VANTA?.FOG) return
 
     try {
-      effectRef.current = window.VANTA.NET({
+      effectRef.current = window.VANTA.FOG({
         el: containerRef.current,
         mouseControls: true,
         touchControls: true,
         gyroControls: false,
         minHeight: 200,
         minWidth: 200,
-        scale: 1.0,
-        scaleMobile: 1.0,
-        color: 0x5c05b3,
-        backgroundColor: 0x0b0916,
-        points: 13,
-        maxDistance: 22,
+        highlightColor: 0xc45de6,
+        midtoneColor: 0x5a16d9,
+        lowlightColor: 0xb033e,
+        baseColor: 0x90404,
+        blurFactor: 0.24,
+        speed: 0.00,
+        zoom: 1.40,
       })
     } catch (e) {
       console.warn('Vanta error:', e)
@@ -58,7 +59,7 @@ export default function VantaBackground() {
       />
       {threeReady && (
         <Script
-          src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"
+          src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.fog.min.js"
           strategy="afterInteractive"
           onLoad={() => setVantaReady(true)}
         />
