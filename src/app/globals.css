@@ -125,28 +125,29 @@ html.light ::-webkit-scrollbar-track { background: rgba(59, 130, 246, 0.05); }
 html.light ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.35); border-radius: 3px; }
 html.light ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.6); }
 
-/* Glass cards: white translucent */
+/* Glass cards: frosted translucent (grayish — same feel as dark mode but lighter) */
 html.light .glass-card {
-  background: rgba(255, 255, 255, 0.88) !important;
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
   border-color: rgba(59, 130, 246, 0.22) !important;
-  box-shadow: 0 4px 24px rgba(59, 130, 246, 0.1);
 }
 
 html.light .glass {
-  background: rgba(255, 255, 255, 0.65) !important;
+  background: rgba(255, 255, 255, 0.3) !important;
   border-color: rgba(59, 130, 246, 0.2) !important;
 }
 
 /* Inputs */
 html.light .glass-input {
-  background: rgba(255, 255, 255, 0.82) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
   border-color: rgba(59, 130, 246, 0.32) !important;
   color: #111827 !important;
 }
-html.light .glass-input::placeholder { color: #9ca3af !important; }
+html.light .glass-input::placeholder { color: #6b7280 !important; }
 html.light .glass-input:focus {
   border-color: rgba(37, 99, 235, 0.65) !important;
-  background: rgba(255, 255, 255, 0.97) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
 }
 
 /* Buttons */

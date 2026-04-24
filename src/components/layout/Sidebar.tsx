@@ -2,10 +2,11 @@
 
 import { useSession, signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   LayoutDashboard, Table2, LogOut,
-  Shield, ChevronRight, CalendarDays, PanelLeftClose, PanelLeftOpen,
+  Shield, ChevronRight, CalendarDays, PanelLeftClose, PanelLeftOpen, StickyNote,
 } from 'lucide-react'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
@@ -13,6 +14,11 @@ import toast from 'react-hot-toast'
 interface Props {
   collapsed: boolean
   onToggle: () => void
+}
+
+interface Notice {
+  id: string
+  content: string
 }
 
 const userLinks = [
@@ -34,6 +40,14 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
   const { data: session } = useSession()
   const pathname = usePathname()
   const isAdmin = session?.user?.role === 'ADMIN'
+  const [notices, setNotices] = useState<Notice[]>([])
+
+  useEffect(() => {
+    fetch('/api/notices')
+      .then((r) => r.json())
+      .then((data) => Array.isArray(data) && setNotices(data))
+      .catch(() => {})
+  }, [])
 
   async function handleLogout() {
     try { await fetch('/api/sessions/logout', { method: 'POST' }) } catch {}
@@ -142,6 +156,23 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
           </>
         )}
       </nav>
+
+      {/* Notices */}
+      {!collapsed && notices.length > 0 && (
+        <div className="px-3 pb-3 border-t border-white/[0.06] pt-3">
+          <p className="text-[10px] font-semibold text-purple-400 uppercase tracking-widest flex items-center gap-1.5 mb-2">
+            <StickyNote size={10} />
+            Avisos
+          </p>
+          <div className="space-y-1.5 max-h-40 overflow-y-auto pr-0.5">
+            {notices.map((n) => (
+              <div key={n.id} className="px-2 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/15">
+                <p className="text-[11px] text-slate-300 leading-snug break-words">{n.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Logout */}
       <div className="px-2 py-4 border-t border-white/[0.06]">
