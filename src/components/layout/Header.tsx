@@ -7,6 +7,7 @@ const pageTitles: Record<string, { title: string; description: string }> = {
   '/crm': { title: 'Mi CRM', description: 'Gestiona tus clientes y leads' },
   '/admin': { title: 'Panel de Administración', description: 'Gestión de usuarios y sesiones' },
   '/calendar': { title: 'Calendario', description: 'Notas y recordatorios por día' },
+  '/avisos': { title: 'Avisos', description: 'Comunicados del equipo' },
 }
 
 export default function Header() {

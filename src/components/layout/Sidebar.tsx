@@ -2,7 +2,6 @@
 
 import { useSession, signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   LayoutDashboard, Table2, LogOut,
@@ -16,20 +15,17 @@ interface Props {
   onToggle: () => void
 }
 
-interface Notice {
-  id: string
-  content: string
-}
-
 const userLinks = [
   { href: '/crm', label: 'Mi CRM', icon: Table2 },
   { href: '/calendar', label: 'Calendario', icon: CalendarDays },
+  { href: '/avisos', label: 'Avisos', icon: StickyNote },
 ]
 
 const adminLinks2 = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/crm', label: 'CRM', icon: Table2 },
   { href: '/calendar', label: 'Calendario', icon: CalendarDays },
+  { href: '/avisos', label: 'Avisos', icon: StickyNote },
 ]
 
 const adminLinks = [
@@ -40,14 +36,6 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
   const { data: session } = useSession()
   const pathname = usePathname()
   const isAdmin = session?.user?.role === 'ADMIN'
-  const [notices, setNotices] = useState<Notice[]>([])
-
-  useEffect(() => {
-    fetch('/api/notices')
-      .then((r) => r.json())
-      .then((data) => Array.isArray(data) && setNotices(data))
-      .catch(() => {})
-  }, [])
 
   async function handleLogout() {
     try { await fetch('/api/sessions/logout', { method: 'POST' }) } catch {}
@@ -59,7 +47,7 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
 
   return (
     <aside
-      className={`${collapsed ? 'w-16' : 'w-60'} min-h-screen flex flex-col glass-card rounded-none rounded-r-2xl border-l-0 border-t-0 border-b-0 transition-all duration-300 flex-shrink-0`}
+      className={`${collapsed ? 'w-16' : 'w-60'} h-full flex flex-col glass-card rounded-none rounded-r-2xl border-l-0 border-t-0 border-b-0 transition-all duration-300 flex-shrink-0 overflow-y-auto`}
     >
       {/* Logo + toggle */}
       <div className={`p-4 border-b border-white/[0.06] flex items-center ${collapsed ? 'justify-center' : 'justify-between'}`}>
@@ -129,27 +117,6 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
             )}
           </Link>
         ))}
-
-        {/* Notices — inside Principal section */}
-        {!collapsed && (
-          <div className="pt-3 mt-1">
-            <p className="text-[10px] font-semibold text-purple-400 uppercase tracking-widest px-3 mb-2 flex items-center gap-1.5">
-              <StickyNote size={10} />
-              Avisos
-            </p>
-            <div className="space-y-1.5 max-h-44 overflow-y-auto pr-0.5">
-              {notices.length === 0 ? (
-                <p className="text-[10px] text-slate-600 px-3 italic">Sin avisos publicados</p>
-              ) : (
-                notices.map((n) => (
-                  <div key={n.id} className="px-2 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/15">
-                    <p className="text-[11px] text-slate-300 leading-snug break-words">{n.content}</p>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        )}
 
         {isAdmin && (
           <>
