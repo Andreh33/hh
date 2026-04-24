@@ -13,18 +13,46 @@ enum Role {
 }
 
 model User {
-  id                 String              @id @default(cuid())
-  name               String
-  email              String              @unique
-  password           String
-  role               Role                @default(USER)
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  sessions           UserSession[]
-  leads              Lead[]
+  id                  String              @id @default(cuid())
+  name                String
+  email               String              @unique
+  password            String
+  role                Role                @default(USER)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  sessions            UserSession[]
+  leads               Lead[]
   passwordResetTokens PasswordResetToken[]
+  calendarNotes       CalendarNote[]
+  reminders           Reminder[]
 
   @@index([email])
+}
+
+model CalendarNote {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+model Reminder {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String
+  reminderAt DateTime
+  notified   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([reminderAt])
 }
 
 model UserSession {

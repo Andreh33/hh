@@ -15,6 +15,7 @@
   "dependencies": {
     "@prisma/client": "^5.14.0",
     "bcryptjs": "^2.4.3",
+    "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
     "three": "^0.134.0",
     "vanta": "^0.5.24",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20.14.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

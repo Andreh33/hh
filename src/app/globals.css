@@ -53,7 +53,17 @@ body {
     @apply bg-white/[0.03] backdrop-blur-xl border border-purple-500/20 rounded-xl;
   }
 
-  .glass-card {
+  @keyframes gradient {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+}
+
+.glass-card {
     background: rgba(17, 10, 40, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);

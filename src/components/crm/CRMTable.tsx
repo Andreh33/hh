@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
+import confetti from 'canvas-confetti'
 import { Plus, Trash2, Search, ChevronUp, ChevronDown, Loader2, Save } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -89,7 +90,12 @@ function Cell({ value, type, onChange, saving }: CellProps) {
     return (
       <select
         value={String(value ?? '')}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => {
+          if (e.target.value === 'HOT') {
+            confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 }, colors: ['#7c3aed', '#a78bfa', '#f59e0b', '#ef4444'] })
+          }
+          onChange(e.target.value)
+        }}
         className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border cursor-pointer bg-transparent outline-none w-full ${
           value ? tagStyles[String(value)] : 'text-slate-600 border-white/10'
         }`}

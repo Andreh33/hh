@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import AuthProvider from '@/components/providers/AuthProvider'
+import dynamic from 'next/dynamic'
+
+const LoadingScreen = dynamic(() => import('@/components/ui/LoadingScreen'), { ssr: false })
 
 export const metadata: Metadata = {
   title: 'CRM by Andreh',
@@ -13,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es" suppressHydrationWarning>
       <body>
         <AuthProvider>
+          <LoadingScreen />
           {children}
           <Toaster
             position="top-right"
