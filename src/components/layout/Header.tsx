@@ -27,7 +27,7 @@ export default function Header() {
           <p className="text-xs text-slate-500 mt-0.5">{page.description}</p>
         )}
       </div>
-      <div className="text-right">
+      <div className="text-right pr-24">
         <p className="text-xs text-slate-500 capitalize">{now}</p>
       </div>
     </header>

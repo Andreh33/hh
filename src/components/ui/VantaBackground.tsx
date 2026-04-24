@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Script from 'next/script'
+import { useTheme } from 'next-themes'
 
 declare global {
   interface Window {
@@ -15,8 +16,18 @@ export default function VantaBackground() {
   const effectRef = useRef<{ destroy: () => void } | null>(null)
   const [threeReady, setThreeReady] = useState(false)
   const [vantaReady, setVantaReady] = useState(false)
+  const { resolvedTheme } = useTheme()
+
+  const isDark = resolvedTheme !== 'light'
 
   useEffect(() => {
+    if (!isDark) {
+      if (effectRef.current) {
+        effectRef.current.destroy()
+        effectRef.current = null
+      }
+      return
+    }
     if (!threeReady || !vantaReady || !containerRef.current || effectRef.current) return
     if (!window.VANTA?.FOG) return
 
@@ -39,7 +50,7 @@ export default function VantaBackground() {
     } catch (e) {
       console.warn('Vanta error:', e)
     }
-  }, [threeReady, vantaReady])
+  }, [threeReady, vantaReady, isDark])
 
   useEffect(() => {
     return () => {
@@ -64,7 +75,11 @@ export default function VantaBackground() {
           onLoad={() => setVantaReady(true)}
         />
       )}
-      <div ref={containerRef} className="fixed inset-0 w-full h-full" style={{ zIndex: -1 }} />
+      <div
+        ref={containerRef}
+        className="fixed inset-0 w-full h-full"
+        style={{ zIndex: -1, display: isDark ? 'block' : 'none' }}
+      />
     </>
   )
 }

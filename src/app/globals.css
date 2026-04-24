@@ -55,16 +55,16 @@ body {
   }
 
   @keyframes gradient {
-  0% { background-position: 0% center; }
-  50% { background-position: 100% center; }
-  100% { background-position: 0% center; }
-}
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+  }
 
-.animate-gradient {
-  animation: gradient 3s ease infinite;
-}
+  .animate-gradient {
+    animation: gradient 3s ease infinite;
+  }
 
-.glass-card {
+  .glass-card {
     background: rgba(17, 10, 40, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -105,4 +105,132 @@ body {
     @apply w-full bg-transparent text-slate-200 text-xs outline-none border-none
     focus:bg-purple-500/10 rounded px-1 py-0.5 transition-colors;
   }
+}
+
+/* ===== LIGHT THEME ===== */
+
+html.light {
+  background: linear-gradient(135deg, #bfdbfe 0%, #dbeafe 50%, #e0f2fe 100%);
+}
+
+html.light body {
+  background-color: transparent;
+  color: #1e293b;
+}
+
+/* Scrollbar */
+html.light ::-webkit-scrollbar-track { background: rgba(59, 130, 246, 0.05); }
+html.light ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 3px; }
+html.light ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.55); }
+
+/* Structural components */
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+  box-shadow: 0 4px 24px rgba(37, 99, 235, 0.07);
+}
+
+html.light .glass {
+  background: rgba(255, 255, 255, 0.6) !important;
+  border-color: rgba(59, 130, 246, 0.2) !important;
+}
+
+html.light .glass-input {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #1e293b !important;
+}
+html.light .glass-input::placeholder { color: #94a3b8 !important; }
+html.light .glass-input:focus {
+  border-color: rgba(37, 99, 235, 0.65) !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+}
+
+html.light .btn-primary {
+  background-color: #2563eb !important;
+}
+html.light .btn-primary:hover { background-color: #1d4ed8 !important; }
+
+html.light .btn-ghost {
+  background: rgba(59, 130, 246, 0.08) !important;
+  border-color: rgba(59, 130, 246, 0.22) !important;
+  color: #2563eb !important;
+}
+html.light .btn-ghost:hover {
+  background: rgba(59, 130, 246, 0.16) !important;
+  border-color: rgba(37, 99, 235, 0.4) !important;
+  color: #1d4ed8 !important;
+}
+
+html.light .btn-danger {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.28) !important;
+  color: #dc2626 !important;
+}
+html.light .btn-danger:hover {
+  background: rgba(239, 68, 68, 0.18) !important;
+  color: #b91c1c !important;
+}
+
+html.light .sidebar-link { color: #475569 !important; }
+html.light .sidebar-link:hover {
+  color: #1e293b !important;
+  background: rgba(59, 130, 246, 0.09) !important;
+}
+html.light .sidebar-link.active {
+  background: rgba(37, 99, 235, 0.13) !important;
+  color: #2563eb !important;
+  border-color: rgba(37, 99, 235, 0.28) !important;
+}
+
+html.light .table-cell-input {
+  color: #334155 !important;
+}
+html.light .table-cell-input:focus {
+  background: rgba(59, 130, 246, 0.07) !important;
+}
+
+/* Header border */
+html.light header {
+  border-bottom-color: rgba(59, 130, 246, 0.14) !important;
+}
+
+/* Selects */
+html.light select,
+html.light option {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+}
+
+/* ---- Text color overrides ---- */
+html.light [class*="text-white"] { color: #1e293b !important; }
+html.light [class*="text-slate-1"],
+html.light [class*="text-slate-2"],
+html.light [class*="text-slate-3"] { color: #334155 !important; }
+html.light [class*="text-slate-4"],
+html.light [class*="text-slate-5"] { color: #64748b !important; }
+html.light [class*="text-slate-6"],
+html.light [class*="text-slate-7"] { color: #94a3b8 !important; }
+html.light [class*="text-purple-3"],
+html.light [class*="text-purple-4"] { color: #2563eb !important; }
+html.light [class*="text-purple-5"] { color: #1d4ed8 !important; }
+html.light [class*="text-red-3"],
+html.light [class*="text-red-4"] { color: #dc2626 !important; }
+html.light [class*="text-orange-4"] { color: #ea580c !important; }
+html.light [class*="text-blue-4"] { color: #1d4ed8 !important; }
+html.light [class*="text-green-4"] { color: #16a34a !important; }
+
+/* ---- Border overrides ---- */
+html.light [class*="border-white/"] { border-color: rgba(59, 130, 246, 0.13) !important; }
+html.light [class*="border-purple-5"],
+html.light [class*="border-purple-6"] { border-color: rgba(59, 130, 246, 0.28) !important; }
+
+/* ---- Background overrides ---- */
+html.light [class*="bg-white/"] { background-color: rgba(255, 255, 255, 0.55) !important; }
+html.light [class*="bg-purple-500/"],
+html.light [class*="bg-purple-600/"] { background-color: rgba(37, 99, 235, 0.1) !important; }
+
+/* Gradient title — blue in light mode */
+html.light .animate-gradient {
+  background-image: linear-gradient(to right, #1e40af, #3b82f6, #1e40af) !important;
 }
