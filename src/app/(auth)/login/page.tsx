@@ -47,7 +47,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
-            <Image src="/logo.webp" alt="LaTech" width={140} height={140} className="rounded-2xl" priority />
+            <Image src="/logo.webp" alt="LaTech" width={220} height={220} className="rounded-2xl" priority />
           </div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-400 via-purple-300 to-violet-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
             LaTech control de ventas
