@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { ChevronLeft, ChevronRight, Plus, Trash2, Bell, Save, Loader2, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, Trash2, Bell, Save, Loader2, X, Phone, ChevronDown } from 'lucide-react'
 import {
   format, startOfMonth, endOfMonth, eachDayOfInterval,
   getDay, addMonths, subMonths, isToday, parseISO
@@ -11,6 +11,13 @@ import toast from 'react-hot-toast'
 
 interface CalendarNote { id: string; date: string; content: string }
 interface Reminder { id: string; title: string; reminderAt: string; notified: boolean }
+interface Call {
+  id: string
+  clientName: string | null
+  businessName: string | null
+  phone: string | null
+  callDateTime: string
+}
 
 const DAYS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 
@@ -27,6 +34,8 @@ export default function CalendarView() {
   const [selected, setSelected] = useState(format(new Date(), 'yyyy-MM-dd'))
   const [notes, setNotes] = useState<Record<string, CalendarNote>>({})
   const [reminders, setReminders] = useState<Reminder[]>([])
+  const [calls, setCalls] = useState<Record<string, Call[]>>({})
+  const [callsOpen, setCallsOpen] = useState(true)
   const [noteText, setNoteText] = useState('')
   const [savingNote, setSavingNote] = useState(false)
   const [newTitle, setNewTitle] = useState('')
@@ -40,16 +49,29 @@ export default function CalendarView() {
     setLoading(true)
     const key = format(m, 'yyyy-MM')
     try {
-      const [notesRes, remRes] = await Promise.all([
+      const [notesRes, remRes, callsRes] = await Promise.all([
         fetch(`/api/calendar/notes?month=${key}`),
         fetch(`/api/calendar/reminders?month=${key}`),
+        fetch(`/api/leads/calls?month=${key}`),
       ])
       const notesData: CalendarNote[] = await notesRes.json()
       const remData: Reminder[] = await remRes.json()
+      const callsRaw = await callsRes.json()
+      const callsData: Call[] = Array.isArray(callsRaw) ? callsRaw : []
+
       const notesMap: Record<string, CalendarNote> = {}
       notesData.forEach((n) => { notesMap[n.date] = n })
       setNotes(notesMap)
       setReminders(remData)
+
+      // Group calls by local date (YYYY-MM-DD)
+      const callsMap: Record<string, Call[]> = {}
+      callsData.forEach((c) => {
+        const dateKey = new Date(c.callDateTime).toLocaleDateString('sv-SE') // sv-SE gives YYYY-MM-DD
+        if (!callsMap[dateKey]) callsMap[dateKey] = []
+        callsMap[dateKey].push(c)
+      })
+      setCalls(callsMap)
     } catch {
       toast.error('Error al cargar datos')
     } finally {
@@ -136,15 +158,13 @@ export default function CalendarView() {
     }
   }
 
-  // Build calendar grid
   const firstDay = startOfMonth(month)
   const lastDay = endOfMonth(month)
   const days = eachDayOfInterval({ start: firstDay, end: lastDay })
   const startPad = (getDay(firstDay) + 6) % 7
 
-  const selectedReminders = reminders.filter((r) =>
-    r.reminderAt.startsWith(selected)
-  )
+  const selectedReminders = reminders.filter((r) => r.reminderAt.startsWith(selected))
+  const selectedCalls = calls[selected] ?? []
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 animate-fade-in">
@@ -192,6 +212,7 @@ export default function CalendarView() {
               const key = format(day, 'yyyy-MM-dd')
               const hasNote = !!notes[key]?.content
               const hasReminder = reminders.some((r) => r.reminderAt.startsWith(key))
+              const hasCalls = !!(calls[key]?.length)
               const isSelected = key === selected
               const todayDay = isToday(day)
 
@@ -208,13 +229,15 @@ export default function CalendarView() {
                     }`}
                 >
                   {format(day, 'd')}
-                  {/* Indicators */}
                   <div className="flex gap-0.5 mt-0.5">
                     {hasNote && (
                       <span className={`w-1 h-1 rounded-full ${isSelected ? 'bg-white' : 'bg-emerald-400'}`} />
                     )}
                     {hasReminder && (
                       <span className={`w-1 h-1 rounded-full ${isSelected ? 'bg-white' : 'bg-orange-400'}`} />
+                    )}
+                    {hasCalls && (
+                      <span className={`w-1 h-1 rounded-full ${isSelected ? 'bg-white' : 'bg-sky-400'}`} />
                     )}
                   </div>
                 </button>
@@ -224,12 +247,15 @@ export default function CalendarView() {
         )}
 
         {/* Legend */}
-        <div className="flex items-center gap-4 mt-4 pt-4 border-t border-white/[0.05]">
+        <div className="flex items-center gap-4 mt-4 pt-4 border-t border-white/[0.05] flex-wrap">
           <div className="flex items-center gap-1.5 text-xs text-slate-500">
             <span className="w-2 h-2 rounded-full bg-emerald-400" /> Nota
           </div>
           <div className="flex items-center gap-1.5 text-xs text-slate-500">
             <span className="w-2 h-2 rounded-full bg-orange-400" /> Recordatorio
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-slate-500">
+            <span className="w-2 h-2 rounded-full bg-sky-400" /> Llamada
           </div>
         </div>
       </div>
@@ -243,7 +269,64 @@ export default function CalendarView() {
           </h3>
           <p className="text-xs text-slate-500">
             {selectedReminders.length} recordatorio{selectedReminders.length !== 1 ? 's' : ''}
+            {selectedCalls.length > 0 && (
+              <> · <span className="text-sky-400">{selectedCalls.length} llamada{selectedCalls.length !== 1 ? 's' : ''}</span></>
+            )}
           </p>
+        </div>
+
+        {/* Scheduled calls */}
+        <div className="glass-card overflow-hidden">
+          <button
+            onClick={() => setCallsOpen((o) => !o)}
+            className="w-full flex items-center justify-between px-4 py-3 hover:bg-white/[0.03] transition-colors"
+          >
+            <h4 className="text-xs font-semibold text-sky-400 uppercase tracking-wider flex items-center gap-2">
+              <Phone size={12} />
+              Llamadas del día
+              {selectedCalls.length > 0 && (
+                <span className="bg-sky-500/20 text-sky-300 border border-sky-500/30 text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+                  {selectedCalls.length}
+                </span>
+              )}
+            </h4>
+            <ChevronDown
+              size={13}
+              className={`text-slate-500 transition-transform duration-200 ${callsOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
+
+          {callsOpen && (
+            <div className="px-4 pb-4">
+              {selectedCalls.length === 0 ? (
+                <p className="text-xs text-slate-700 text-center py-3">Sin llamadas programadas</p>
+              ) : (
+                <div className="space-y-2">
+                  {selectedCalls.map((c) => (
+                    <div key={c.id} className="p-3 rounded-lg bg-sky-500/5 border border-sky-500/15">
+                      <div className="flex items-start gap-2">
+                        <Phone size={12} className="text-sky-400 flex-shrink-0 mt-0.5" />
+                        <div className="min-w-0">
+                          <p className="text-xs font-medium text-slate-200 truncate">
+                            {c.clientName || c.businessName || 'Sin nombre'}
+                          </p>
+                          {c.businessName && c.clientName && (
+                            <p className="text-[10px] text-slate-500 truncate">{c.businessName}</p>
+                          )}
+                          {c.phone && (
+                            <p className="text-[11px] text-sky-400 font-medium mt-0.5">{c.phone}</p>
+                          )}
+                          <p className="text-[10px] text-slate-600 mt-0.5">
+                            {format(new Date(c.callDateTime), 'HH:mm')}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Note */}
@@ -280,7 +363,6 @@ export default function CalendarView() {
             Recordatorios
           </h4>
 
-          {/* Add reminder */}
           <div className="space-y-2 mb-3">
             <input
               type="text"
@@ -313,7 +395,6 @@ export default function CalendarView() {
             Sonará 5 minutos antes automáticamente
           </p>
 
-          {/* Reminders list */}
           <div className="space-y-1.5">
             {selectedReminders.length === 0 ? (
               <p className="text-xs text-slate-700 text-center py-2">Sin recordatorios</p>
