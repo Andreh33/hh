@@ -15,8 +15,12 @@ import {
 import toast from 'react-hot-toast'
 
 const userLinks = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/crm', label: 'Mi CRM', icon: Table2 },
+]
+
+const adminLinks2 = [
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/crm', label: 'CRM', icon: Table2 },
 ]
 
 const adminLinks = [
@@ -76,7 +80,7 @@ export default function Sidebar() {
         <p className="text-[10px] font-semibold text-slate-600 uppercase tracking-widest px-3 mb-2">
           Principal
         </p>
-        {userLinks.map(({ href, label, icon: Icon }) => (
+        {(isAdmin ? adminLinks2 : userLinks).map(({ href, label, icon: Icon }) => (
           <Link
             key={href}
             href={href}

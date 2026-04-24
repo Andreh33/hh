@@ -5,7 +5,11 @@ import { authOptions } from '@/lib/auth'
 export default async function HomePage() {
   const session = await getServerSession(authOptions)
   if (session) {
-    redirect('/dashboard')
+    if (session.user.role === 'ADMIN') {
+      redirect('/dashboard')
+    } else {
+      redirect('/crm')
+    }
   } else {
     redirect('/login')
   }

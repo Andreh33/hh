@@ -1,14 +1,16 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { redirect } from 'next/navigation'
 import { Users, Table2, Clock, Activity, StickyNote } from 'lucide-react'
 import StatsCard from '@/components/ui/StatsCard'
 import { formatDuration, formatDate } from '@/lib/utils'
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions)!
-  const userId = session!.user.id
-  const isAdmin = session!.user.role === 'ADMIN'
+  const session = await getServerSession(authOptions)
+  if (!session || session.user.role !== 'ADMIN') redirect('/crm')
+  const userId = session.user.id
+  const isAdmin = true
 
   const [totalLeads, userSessions, recentSessions, notices] = await Promise.all([
     prisma.lead.count({ where: isAdmin ? {} : { userId } }),
