@@ -4,9 +4,10 @@ import { useSession, signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import {
-  LayoutDashboard, Table2, Users, LogOut,
-  Zap, Shield, ChevronRight, CalendarDays, PanelLeftClose, PanelLeftOpen,
+  LayoutDashboard, Table2, LogOut,
+  Shield, ChevronRight, CalendarDays, PanelLeftClose, PanelLeftOpen,
 } from 'lucide-react'
+import Image from 'next/image'
 import toast from 'react-hot-toast'
 
 interface Props {
@@ -50,15 +51,15 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
       <div className={`p-4 border-b border-white/[0.06] flex items-center ${collapsed ? 'justify-center' : 'justify-between'}`}>
         {!collapsed && (
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-8 h-8 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0">
-              <Zap className="w-4 h-4 text-purple-400" />
+            <div className="w-8 h-8 rounded-xl overflow-hidden flex-shrink-0">
+              <Image src="/logopequeno.webp" alt="LaTech" width={32} height={32} className="w-full h-full object-cover" />
             </div>
             <p className="text-sm font-semibold text-white truncate">LaTech control de ventas</p>
           </div>
         )}
         {collapsed && (
-          <div className="w-8 h-8 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center">
-            <Zap className="w-4 h-4 text-purple-400" />
+          <div className="w-8 h-8 rounded-xl overflow-hidden">
+            <Image src="/logopequeno.webp" alt="LaTech" width={32} height={32} className="w-full h-full object-cover" />
           </div>
         )}
         <button

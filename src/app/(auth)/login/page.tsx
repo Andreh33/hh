@@ -49,7 +49,7 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center mb-6">
             <Image src="/logo.webp" alt="LaTech" width={380} height={380} className="rounded-3xl" priority />
           </div>
-          <p className="text-slate-500 text-sm">Inicia sesión en tu cuenta</p>
+          <p className="text-slate-500 text-sm auth-subtitle">Inicia sesión en tu cuenta</p>
         </div>
 
         {/* Card */}

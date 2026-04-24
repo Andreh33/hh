@@ -8,7 +8,7 @@ declare global {
   interface Window {
     VANTA: {
       FOG: (config: Record<string, unknown>) => { destroy: () => void }
-      WAVES: (config: Record<string, unknown>) => { destroy: () => void }
+      CLOUDS: (config: Record<string, unknown>) => { destroy: () => void }
     }
     THREE: unknown
   }
@@ -19,7 +19,7 @@ export default function VantaBackground() {
   const effectRef = useRef<{ destroy: () => void } | null>(null)
   const [threeReady, setThreeReady] = useState(false)
   const [fogReady, setFogReady] = useState(false)
-  const [wavesReady, setWavesReady] = useState(false)
+  const [cloudsReady, setCloudsReady] = useState(false)
   const { resolvedTheme } = useTheme()
 
   const isDark = resolvedTheme !== 'light'
@@ -51,28 +51,27 @@ export default function VantaBackground() {
       } catch (e) {
         console.warn('Vanta FOG error:', e)
       }
-    } else if (!isDark && threeReady && wavesReady && window.VANTA?.WAVES) {
+    } else if (!isDark && threeReady && cloudsReady && window.VANTA?.CLOUDS) {
       try {
-        effectRef.current = window.VANTA.WAVES({
+        effectRef.current = window.VANTA.CLOUDS({
           el: containerRef.current,
           mouseControls: true,
           touchControls: true,
           gyroControls: false,
           minHeight: 200,
           minWidth: 200,
-          scale: 1.00,
-          scaleMobile: 1.00,
-          color: 0x1d62ac,
-          shininess: 125.00,
-          waveHeight: 18.00,
-          waveSpeed: 0.70,
-          zoom: 0.65,
+          skyColor: 0x71acff,
+          cloudShadowColor: 0x1c63a7,
+          sunColor: 0xafa1ed,
+          sunGlareColor: 0xc9defa,
+          sunlightColor: 0x97d5f7,
+          speed: 0.10,
         })
       } catch (e) {
-        console.warn('Vanta WAVES error:', e)
+        console.warn('Vanta CLOUDS error:', e)
       }
     }
-  }, [threeReady, fogReady, wavesReady, isDark])
+  }, [threeReady, fogReady, cloudsReady, isDark])
 
   useEffect(() => {
     return () => {
@@ -98,9 +97,9 @@ export default function VantaBackground() {
             onLoad={() => setFogReady(true)}
           />
           <Script
-            src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.waves.min.js"
+            src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.clouds.min.js"
             strategy="afterInteractive"
-            onLoad={() => setWavesReady(true)}
+            onLoad={() => setCloudsReady(true)}
           />
         </>
       )}
