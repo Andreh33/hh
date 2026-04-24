@@ -58,12 +58,19 @@ model Lead {
   phone           String?
   email           String?
   commercialName  String?
+  tag             String?
   order           Int       @default(0)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
   @@index([userId])
   @@index([order])
+}
+
+model Notice {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
 }
 
 model PasswordResetToken {

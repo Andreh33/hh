@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { Users, Table2, Clock, Activity } from 'lucide-react'
+import { Users, Table2, Clock, Activity, StickyNote } from 'lucide-react'
 import StatsCard from '@/components/ui/StatsCard'
 import { formatDuration, formatDate } from '@/lib/utils'
 
@@ -10,7 +10,7 @@ export default async function DashboardPage() {
   const userId = session!.user.id
   const isAdmin = session!.user.role === 'ADMIN'
 
-  const [totalLeads, userSessions, recentSessions] = await Promise.all([
+  const [totalLeads, userSessions, recentSessions, notices] = await Promise.all([
     prisma.lead.count({ where: isAdmin ? {} : { userId } }),
     prisma.userSession.findMany({
       where: isAdmin ? {} : { userId },
@@ -24,6 +24,7 @@ export default async function DashboardPage() {
       take: 8,
       include: isAdmin ? { user: { select: { name: true } } } : undefined,
     }),
+    prisma.notice.findMany({ orderBy: { createdAt: 'desc' } }),
   ])
 
   const totalSeconds = userSessions.reduce((acc, s) => acc + (s.duration ?? 0), 0)
@@ -31,6 +32,23 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
+      {/* Avisos del admin */}
+      {notices.length > 0 && (
+        <div className="glass-card p-4 border-purple-500/30">
+          <h2 className="text-xs font-semibold text-purple-300 mb-3 flex items-center gap-2 uppercase tracking-wider">
+            <StickyNote size={13} />
+            Avisos
+          </h2>
+          <div className="space-y-2">
+            {notices.map((n) => (
+              <div key={n.id} className="p-3 rounded-lg bg-purple-500/5 border border-purple-500/15">
+                <p className="text-sm text-slate-200 whitespace-pre-wrap">{n.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard

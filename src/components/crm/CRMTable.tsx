@@ -18,6 +18,7 @@ interface Lead {
   phone: string | null
   email: string | null
   commercialName: string | null
+  tag: string | null
   order: number
   createdAt: string
 }
@@ -25,7 +26,20 @@ interface Lead {
 type SortKey = keyof Lead
 type SortDir = 'asc' | 'desc'
 
-const columns: { key: keyof Lead; label: string; width: string; type: 'text' | 'bool' | 'datetime' | 'textarea' }[] = [
+const tagOptions = [
+  { value: '', label: '— Sin etiqueta' },
+  { value: 'HOT', label: '🔴 Caliente' },
+  { value: 'WARM', label: '🟡 Templado' },
+  { value: 'COLD', label: '🔵 Frío' },
+]
+const tagStyles: Record<string, string> = {
+  HOT: 'bg-red-500/20 text-red-400 border-red-500/30',
+  WARM: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+  COLD: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+}
+
+const columns: { key: keyof Lead; label: string; width: string; type: 'text' | 'bool' | 'datetime' | 'textarea' | 'tag' }[] = [
+  { key: 'tag', label: 'Etiqueta', width: 'min-w-[120px]', type: 'tag' },
   { key: 'businessName', label: 'Negocio', width: 'min-w-[130px]', type: 'text' },
   { key: 'clientName', label: 'Cliente', width: 'min-w-[130px]', type: 'text' },
   { key: 'response', label: 'Respuesta', width: 'min-w-[120px]', type: 'text' },
@@ -53,7 +67,7 @@ function useDebounce<T extends (...args: Parameters<T>) => void>(fn: T, delay: n
 
 interface CellProps {
   value: string | boolean | null
-  type: 'text' | 'bool' | 'datetime' | 'textarea'
+  type: 'text' | 'bool' | 'datetime' | 'textarea' | 'tag'
   onChange: (val: string | boolean) => void
   saving: boolean
 }
@@ -70,6 +84,24 @@ function Cell({ value, type, onChange, saving }: CellProps) {
   useEffect(() => {
     if (editing && inputRef.current) inputRef.current.focus()
   }, [editing])
+
+  if (type === 'tag') {
+    return (
+      <select
+        value={String(value ?? '')}
+        onChange={(e) => onChange(e.target.value)}
+        className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border cursor-pointer bg-transparent outline-none w-full ${
+          value ? tagStyles[String(value)] : 'text-slate-600 border-white/10'
+        }`}
+      >
+        {tagOptions.map((o) => (
+          <option key={o.value} value={o.value} className="bg-[#0d0d1a] text-slate-200">
+            {o.label}
+          </option>
+        ))}
+      </select>
+    )
+  }
 
   if (type === 'bool') {
     return (

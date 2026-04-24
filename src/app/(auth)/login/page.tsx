@@ -48,7 +48,7 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-purple-600/20 border border-purple-500/30 mb-4">
             <Zap className="w-7 h-7 text-purple-400" />
           </div>
-          <h1 className="text-2xl font-bold text-white">CRM Pro</h1>
+          <h1 className="text-2xl font-bold text-white">CRM by andreh</h1>
           <p className="text-slate-500 text-sm mt-1">Inicia sesión en tu cuenta</p>
         </div>
 
@@ -129,11 +129,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Demo credentials */}
-          <div className="mt-4 p-3 rounded-lg bg-purple-500/5 border border-purple-500/15">
-            <p className="text-xs text-slate-500 text-center mb-1 font-medium">Credenciales de demostración</p>
-            <p className="text-xs text-slate-400 text-center">Admin: <span className="text-purple-400">admin123@crm.com</span> / <span className="text-purple-400">admin123</span></p>
-          </div>
         </div>
       </div>
     </div>

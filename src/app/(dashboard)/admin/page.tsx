@@ -6,13 +6,15 @@ import { Users, Clock, Table2, Activity } from 'lucide-react'
 import StatsCard from '@/components/ui/StatsCard'
 import UsersTable from '@/components/admin/UsersTable'
 import SessionsLog from '@/components/admin/SessionsLog'
+import NoticeBoard from '@/components/admin/NoticeBoard'
+import UserCRM from '@/components/admin/UserCRM'
 import { totalHours } from '@/lib/utils'
 
 export default async function AdminPage() {
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== 'ADMIN') redirect('/dashboard')
 
-  const [usersRaw, totalLeads, sessionsToday, allSessions, recentSessions] = await Promise.all([
+  const [usersRaw, totalLeads, sessionsToday, allSessions, recentSessions, notices] = await Promise.all([
     prisma.user.findMany({
       select: {
         id: true,
@@ -46,6 +48,7 @@ export default async function AdminPage() {
       orderBy: { loginAt: 'desc' },
       include: { user: { select: { name: true, email: true } } },
     }),
+    prisma.notice.findMany({ orderBy: { createdAt: 'desc' } }),
   ])
 
   const totalSeconds = allSessions.reduce((acc, s) => acc + (s.duration ?? 0), 0)
@@ -70,6 +73,14 @@ export default async function AdminPage() {
     user: s.user,
   }))
 
+  const noticesSerialized = notices.map((n) => ({
+    id: n.id,
+    content: n.content,
+    createdAt: n.createdAt.toISOString(),
+  }))
+
+  const usersForCRM = usersRaw.map((u) => ({ id: u.id, name: u.name, email: u.email }))
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Stats */}
@@ -80,8 +91,14 @@ export default async function AdminPage() {
         <StatsCard title="Horas Totales" value={totalHours(totalSeconds)} subtitle="Tiempo acumulado" icon={Clock} color="orange" />
       </div>
 
+      {/* Notice board */}
+      <NoticeBoard initial={noticesSerialized} />
+
       {/* Users table */}
       <UsersTable users={users} />
+
+      {/* CRM de usuarios */}
+      <UserCRM users={usersForCRM} />
 
       {/* Sessions log */}
       <SessionsLog sessions={sessions} />
