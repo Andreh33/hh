@@ -107,7 +107,7 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
       )}
 
       {/* Navigation */}
-      <nav className="flex-1 px-2 py-4 space-y-0.5">
+      <nav className="flex-1 px-2 py-4 space-y-0.5 overflow-y-auto">
         {!collapsed && (
           <p className="text-[10px] font-semibold text-slate-600 uppercase tracking-widest px-3 mb-2">
             Principal
@@ -129,6 +129,27 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
             )}
           </Link>
         ))}
+
+        {/* Notices — inside Principal section */}
+        {!collapsed && (
+          <div className="pt-3 mt-1">
+            <p className="text-[10px] font-semibold text-purple-400 uppercase tracking-widest px-3 mb-2 flex items-center gap-1.5">
+              <StickyNote size={10} />
+              Avisos
+            </p>
+            <div className="space-y-1.5 max-h-44 overflow-y-auto pr-0.5">
+              {notices.length === 0 ? (
+                <p className="text-[10px] text-slate-600 px-3 italic">Sin avisos publicados</p>
+              ) : (
+                notices.map((n) => (
+                  <div key={n.id} className="px-2 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/15">
+                    <p className="text-[11px] text-slate-300 leading-snug break-words">{n.content}</p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
 
         {isAdmin && (
           <>
@@ -156,23 +177,6 @@ export default function Sidebar({ collapsed, onToggle }: Props) {
           </>
         )}
       </nav>
-
-      {/* Notices */}
-      {!collapsed && notices.length > 0 && (
-        <div className="px-3 pb-3 border-t border-white/[0.06] pt-3">
-          <p className="text-[10px] font-semibold text-purple-400 uppercase tracking-widest flex items-center gap-1.5 mb-2">
-            <StickyNote size={10} />
-            Avisos
-          </p>
-          <div className="space-y-1.5 max-h-40 overflow-y-auto pr-0.5">
-            {notices.map((n) => (
-              <div key={n.id} className="px-2 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/15">
-                <p className="text-[11px] text-slate-300 leading-snug break-words">{n.content}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Logout */}
       <div className="px-2 py-4 border-t border-white/[0.06]">

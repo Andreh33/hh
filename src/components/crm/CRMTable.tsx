@@ -139,11 +139,11 @@ function Cell({ value, type, onChange, saving }: CellProps) {
         <button
           onClick={() => onChange(!value)}
           className={`w-8 h-4 rounded-full transition-all duration-200 relative flex-shrink-0 ${
-            value ? 'bg-purple-500' : 'bg-white/10'
+            value ? 'bg-purple-500' : 'bg-slate-300/70 dark:bg-white/10'
           }`}
         >
           <span
-            className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all duration-200 ${
+            className={`absolute top-0.5 w-3 h-3 rounded-full transition-all duration-200 bg-slate-700 dark:bg-white ${
               value ? 'left-[18px]' : 'left-0.5'
             }`}
           />
@@ -463,7 +463,7 @@ export default function CRMTable() {
                     <td className="px-2 py-2 text-center">
                       <button
                         onClick={() => deleteRow(lead.id)}
-                        className="w-6 h-6 rounded flex items-center justify-center text-slate-700 hover:text-red-400 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-150"
+                        className="w-6 h-6 rounded flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-red-400 hover:bg-red-500/10 opacity-50 group-hover:opacity-100 transition-all duration-150"
                       >
                         <Trash2 size={12} />
                       </button>
