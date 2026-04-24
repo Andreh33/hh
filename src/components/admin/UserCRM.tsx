@@ -69,10 +69,11 @@ export default function UserCRM({ users }: { users: User[] }) {
             value={selectedUserId}
             onChange={(e) => handleSelect(e.target.value)}
             className="glass-input pl-3 pr-8 py-1.5 text-sm appearance-none cursor-pointer min-w-[200px]"
+            style={{ backgroundColor: '#1a0a2e', color: '#f1f5f9' }}
           >
-            <option value="">Seleccionar usuario...</option>
+            <option value="" style={{ backgroundColor: '#1a0a2e', color: '#94a3b8' }}>Seleccionar usuario...</option>
             {users.map((u) => (
-              <option key={u.id} value={u.id}>
+              <option key={u.id} value={u.id} style={{ backgroundColor: '#1a0a2e', color: '#f1f5f9' }}>
                 {u.name} ({u.email})
               </option>
             ))}

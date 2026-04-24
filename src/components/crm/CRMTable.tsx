@@ -427,7 +427,7 @@ export default function CRMTable() {
                                 l.id === lead.id ? { ...l, [col.key]: val } : l
                               )
                             )
-                            if (col.type === 'bool') {
+                            if (col.type === 'bool' || col.type === 'tag') {
                               updateLead(lead.id, col.key, val)
                             } else {
                               debouncedUpdate(lead.id, col.key, val)

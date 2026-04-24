@@ -64,7 +64,7 @@ export default function VantaBackground() {
           onLoad={() => setVantaReady(true)}
         />
       )}
-      <div ref={containerRef} className="fixed inset-0 -z-10 w-full h-full" />
+      <div ref={containerRef} className="fixed inset-0 w-full h-full" style={{ zIndex: -1 }} />
     </>
   )
 }

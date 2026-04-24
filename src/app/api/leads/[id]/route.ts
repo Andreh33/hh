@@ -18,7 +18,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const body = await req.json()
     const updateData: Record<string, unknown> = {}
 
-    const stringFields = ['businessName', 'clientName', 'response', 'notes', 'issues', 'phone', 'email', 'commercialName']
+    const stringFields = ['businessName', 'clientName', 'response', 'notes', 'issues', 'phone', 'email', 'commercialName', 'tag']
     const boolFields = ['shouldCall', 'hasSeenDemo', 'wantsCustomDemo']
 
     for (const field of stringFields) {
