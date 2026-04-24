@@ -1,14 +1,9 @@
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { StickyNote } from 'lucide-react'
 import CRMTable from '@/components/crm/CRMTable'
 
 export default async function CRMPage() {
-  const session = await getServerSession(authOptions)
-  const isAdmin = session?.user?.role === 'ADMIN'
-
-  const notices = isAdmin ? [] : await prisma.notice.findMany({
+  const notices = await prisma.notice.findMany({
     orderBy: { createdAt: 'desc' },
   })
 
