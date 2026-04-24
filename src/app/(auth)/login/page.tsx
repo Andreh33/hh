@@ -4,7 +4,8 @@ import { useState, FormEvent } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Eye, EyeOff, LogIn, Zap } from 'lucide-react'
+import { Eye, EyeOff, LogIn } from 'lucide-react'
+import Image from 'next/image'
 import toast from 'react-hot-toast'
 
 export default function LoginPage() {
@@ -45,8 +46,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md animate-slide-up">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-purple-600/20 border border-purple-500/30 mb-4">
-            <Zap className="w-7 h-7 text-purple-400" />
+          <div className="inline-flex items-center justify-center mb-4">
+            <Image src="/logo.webp" alt="LaTech" width={80} height={80} className="rounded-2xl" priority />
           </div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-400 via-purple-300 to-violet-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
             LaTech control de ventas
