@@ -64,10 +64,10 @@ export default function CalendarView() {
       setNotes(notesMap)
       setReminders(remData)
 
-      // Group calls by local date (YYYY-MM-DD)
+      // Group calls by UTC date (data was saved treating local time as UTC)
       const callsMap: Record<string, Call[]> = {}
       callsData.forEach((c) => {
-        const dateKey = new Date(c.callDateTime).toLocaleDateString('sv-SE') // sv-SE gives YYYY-MM-DD
+        const dateKey = c.callDateTime.slice(0, 10) // "YYYY-MM-DD" from ISO UTC string
         if (!callsMap[dateKey]) callsMap[dateKey] = []
         callsMap[dateKey].push(c)
       })
@@ -317,7 +317,7 @@ export default function CalendarView() {
                             <p className="text-[11px] text-sky-400 font-medium mt-0.5">{c.phone}</p>
                           )}
                           <p className="text-[10px] text-slate-600 mt-0.5">
-                            {format(new Date(c.callDateTime), 'HH:mm')}
+                            {c.callDateTime.slice(11, 16)}
                           </p>
                         </div>
                       </div>
